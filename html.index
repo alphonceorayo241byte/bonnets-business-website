@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonnets @700 - Bonenets | Nairobi</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial}
+body{background:#fff5f8}
+header{background:#111;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;position:sticky;top:0;z-index:10}
+.hero{text-align:center;padding:30px 15px;background:linear-gradient(135deg,#ff4b8b,#ff8a5c);color:white}
+.hero h1{font-size:30px}
+.hero a{color:white}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:15px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.07)}
+.card img{width:100%;height:190px;object-fit:cover}
+.info{padding:10px;text-align:center}
+.price{color:#ff2a7a;font-weight:800;font-size:18px;margin:4px 0}
+.btn{background:#111;color:#fff;border:none;padding:10px;width:100%;border-radius:20px;font-weight:bold;cursor:pointer}
+#cart{background:#fff;margin:15px;padding:18px;border-radius:18px;box-shadow:0 6px 18px rgba(0,0,0,.07)}
+.wa{background:#25D366;color:white}
+.black{background:#111;color:white}
+.small{font-size:12px;color:#666;text-align:center;margin-top:8px}
+.small a{color:#111}
+</style>
+</head>
+<body>
+<header><b>BONENETS @700</b><span>🛒 <span id="count">0</span></span></header>
+
+<div class="hero">
+  <h1>Fluffy Bonnets @ KES 700</h1>
+  <p>Soft • Warm • Cute Designs</p>
+  <p style="font-size:13px;margin-top:6px">📞 <a href="tel:0796951475">0796951475</a> | Nairobi Delivery</p>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div id="cart">
+  <h3>Your Order</h3>
+  <div id="items" style="margin:10px 0">No bonnet selected</div>
+  <h3>Total: KES <span id="total">0</span></h3>
+  <button class="btn wa" onclick="orderWA()" style="margin-top:12px">Order on WhatsApp</button>
+  <button class="btn black" onclick="payMpesa()" style="margin-top:8px">Pay with M-Pesa - 0796951475</button>
+  <p class="small">Lipa na M-Pesa then send code on WhatsApp<br>Email: <a href="mailto:Lydiahoyawa014@gmail.com">Lydiahoyawa014@gmail.com</a><br>Instagram: Bonenets@700</p>
+</div>
+
+<script>
+const products = [
+  {id:1,name:"Checkered Bear Bonnet",price:700,img:"https://i.postimg.cc/XJcs0cpc/Messenger-creation-0749B372-191F-423E-89B7-FD04A32DA136.jpg"},
+  {id:2,name:"Cartoon Star Bonnet",price:700,img:"https://i.postimg.cc/Ss7gp7JW/Messenger-creation-C4793229-674B-461E-B94D-3DDDF58A15DB.jpg"},
+  {id:3,name:"Plain White Fluffy",price:700,img:"https://i.postimg.cc/B6cmGcX8/Messenger-creation-3A7561DF-C2CE-4849-A78A-96225357F0E9.jpg"},
+  {id:4,name:"Black & Hot Pink",price:700,img:"https://i.postimg.cc/W365P6hJ/Messenger-creation-7C80B06D-971A-46F5-A499-6361F52B87CB.jpg"},
+  {id:5,name:"Sunshine Yellow",price:700,img:"https://i.postimg.cc/4dbWTbmt/Messenger-creation-A5093DE5-685A-4053-9526-A7EB18832FB0.jpg"},
+  {id:6,name:"Hello Kitty",price:700,img:"https://i.postimg.cc/MTb98bvB/Messenger-creation-2DE7BFF3-0D13-4CBB-A4E0-0357692B8E52.jpg"},
+  {id:7,name:"Cream Dotted",price:700,img:"https://i.postimg.cc/FRgTQg7x/Messenger-creation-F1758C22-7D21-4FEC-8072-EB21698DBB33.jpg"},
+  {id:8,name:"Hot Pink Plain",price:700,img:"https://i.postimg.cc/zBSx1SVb/Messenger-creation-0B57142D-0B83-49B2-986C-7D8F5D44B012.jpg"},
+  {id:9,name:"Hot Pink Pom-Pom",price:700,img:"https://i.postimg.cc/NM7dw752/Messenger-creation-5780D305-5FB5-467E-AD96-563F2D8945C2.jpg"},
+];
+let cart=[];
+const grid=document.getElementById('grid');
+products.forEach(p=>{
+  grid.innerHTML+=`<div class="card"><img src="${p.img}"><div class="info"><h4>${p.name}</h4><div class="price">KES ${p.price}</div><button class="btn" onclick="add(${p.id})">Add to Cart</button></div></div>`;
+});
+function add(id){cart.push(products.find(p=>p.id==id));update();}
+function update(){
+  document.getElementById('count').innerText=cart.length;
+  let total=cart.reduce((a,b)=>a+b.price,0);
+  document.getElementById('total').innerText=total;
+  document.getElementById('items').innerHTML=cart.map(c=>`• ${c.name} - 700`).join('<br>') || 'No bonnet selected';
+}
+function orderWA(){
+  if(!cart.length) return alert('Add a bonnet first');
+  let total=cart.reduce((a,b)=>a+b.price,0);
+  let list=cart.map(c=>`- ${c.name}`).join('%0A');
+  let msg=`Hello Bonenets@700!%0A%0AI want:%0A${list}%0A%0ATotal: KES ${total}%0AName:%0ALocation in Nairobi:%0A`;
+  window.open(`https://wa.me/254796951475?text=${msg}`,'_blank');
+}
+function payMpesa(){alert('Pay to: 0796951475\nAmount: KES '+document.getElementById('total').innerText+'\nThen click Order on WhatsApp & send M-Pesa code'); orderWA();}
+</script>
+</body>
+</html>
